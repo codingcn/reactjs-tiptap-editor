@@ -7,6 +7,7 @@ import { Check } from 'lucide-react';
 import { ActionButton } from '@/components';
 import { IconComponent } from '@/components/icons';
 import { Popover, PopoverContent, PopoverTrigger, Separator } from '@/components/ui';
+import { AILoadingBubble, RichTextAI } from '@/extensions/AI';
 import { RichTextBold } from '@/extensions/Bold';
 import { RichTextCode } from '@/extensions/Code';
 import { RichTextColor } from '@/extensions/Color';
@@ -127,12 +128,13 @@ function ParagraphFormat() {
 function DefaultButtonBubble() {
   return (
     <>
-      <ParagraphFormat />
+      <RichTextAI />
 
       <Separator className="!richtext-mx-1 !richtext-my-2 !richtext-h-[16px]"
-        orientation="vertical"
-      />
+                   orientation="vertical"
+        />
 
+      <ParagraphFormat />
       <RichTextBold />
       <RichTextItalic />
       <RichTextUnderline />
@@ -156,6 +158,12 @@ export function RichTextBubbleText({ buttonBubble }: RichTextBubbleTextProps) {
   const editable = useEditableEditor();
 
   const shouldShow = ({ editor }: any) => {
+    // Hide when AI is loading
+    const aiStorage = (editor.storage as any).ai;
+    if (aiStorage?.isLoading) {
+      return false;
+    }
+
     const { selection } = editor.view.state;
     const { $from, to } = selection;
 
@@ -172,6 +180,8 @@ export function RichTextBubbleText({ buttonBubble }: RichTextBubbleTextProps) {
   }
 
   return (
+    <>
+    <AILoadingBubble />
     <BubbleMenu editor={editor}
       options={{ placement: 'bottom', offset: 8, flip: true }}
       pluginKey={'RichTextBubbleText'}
@@ -189,5 +199,6 @@ export function RichTextBubbleText({ buttonBubble }: RichTextBubbleTextProps) {
           </div>
         )}
     </BubbleMenu>
+    </>
   );
 }

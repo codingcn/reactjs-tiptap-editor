@@ -60,6 +60,7 @@ import { Drawer, RichTextDrawer } from 'reactjs-tiptap-editor/drawer';
 import { Twitter, RichTextTwitter } from 'reactjs-tiptap-editor/twitter';
 import { Mention } from 'reactjs-tiptap-editor/mention';
 import { CodeView, RichTextCodeView } from 'reactjs-tiptap-editor/codeview';
+import { AI } from 'reactjs-tiptap-editor/ai';
 
 // Slash Command
 import { SlashCommand, SlashCommandList } from 'reactjs-tiptap-editor/slashcommand';
@@ -320,6 +321,45 @@ const extensions = [
   }),
   SlashCommand,
   CodeView,
+  AI.configure({
+    // Configure menu items: which actions to show, their order, and optionally custom icons/labels
+    menuItems: [
+      { action: 'improve' },
+      { action: 'adjustTone' },
+      { action: 'fixSpelling' },
+      { action: 'makeLonger' },
+      { action: 'makeShorter' },
+      { action: 'simplify' },
+      { action: 'emojify' },
+      { action: 'completeSentence' },
+      { action: 'tldr' },
+      { action: 'translate' },
+    ],
+    // Configure available tones for adjustTone
+    tones: ['professional', 'casual', 'straightforward', 'confident', 'friendly'],
+    // Configure available languages for translate
+    languages: ['english', 'chinese','japanese',  'spanish', 'french', 'german', 'korean'],
+    completion: async (request) => {
+      console.log('AI Request:', request);
+      await new Promise(resolve => setTimeout(resolve, 1000));
+
+      const responses: Record<string, string> = {
+        improve: `[Improved] ${request.text}`,
+        fixSpelling: request.text.replace(/teh/g, 'the'),
+        makeShorter: request.text.split(' ').slice(0, Math.ceil(request.text.split(' ').length / 2)).join(' ') + '...',
+        makeLonger: `${request.text} Furthermore, this text has been expanded.`,
+        simplify: request.text.split('.')[0] + '.',
+        emojify: `${request.text} 🎉✨`,
+        tldr: `TL;DR: ${request.text.substring(0, 50)}...`,
+        translate: `[Translated to ${request.language}] ${request.text}`,
+        completeSentence: `${request.text} and this is the completed sentence.`,
+        adjustTone: `[${request.tone} tone] ${request.text}`,
+        askAI: `AI Response to "${request.prompt}": This is a mock response.`,
+      };
+
+      return { text: responses[request.action] || request.text };
+    },
+  }),
 
   //  Collaboration.configure({
   //   document: hocuspocusProvider.document,
@@ -332,7 +372,32 @@ const extensions = [
   // }),
 ]
 
-const DEFAULT = ``
+const DEFAULT = `
+<h1>探索人工智能的未来</h1>
+<p>人工智能（AI）正在以前所未有的速度改变我们的世界。从智能助手到自动驾驶汽车，从医疗诊断到创意写作，AI 的应用已经渗透到生活的方方面面。</p>
+
+<h2>AI 的发展历程</h2>
+<p>人工智能的概念最早可以追溯到 1956 年的达特茅斯会议。经过近七十年的发展，AI 已经从简单的规则系统演变为能够进行深度学习的复杂神经网络。</p>
+
+<p>近年来，大语言模型（LLM）的出现更是掀起了一场革命。这些模型能够理解和生成人类语言，为人机交互开辟了新的可能性。</p>
+
+<h2>AI 在日常生活中的应用</h2>
+<ul>
+<li><strong>智能写作助手</strong>：帮助用户改进文章、修正语法错误、优化表达方式</li>
+<li><strong>图像生成</strong>：根据文字描述创造出令人惊叹的艺术作品</li>
+<li><strong>代码编程</strong>：协助开发者编写、调试和优化代码</li>
+<li><strong>语言翻译</strong>：实现实时、准确的多语言翻译</li>
+</ul>
+
+<h2>未来展望</h2>
+<p>随着技术的不断进步，AI 将会变得更加智能和普及。我们期待看到更多创新应用的出现，同时也需要关注 AI 伦理和安全问题，确保技术发展造福人类社会。</p>
+
+<blockquote>
+<p>"人工智能是我们这个时代最重要的技术变革之一。" —— 某科技领袖</p>
+</blockquote>
+
+<p>让我们一起拥抱这个充满可能性的未来！</p>
+`
 
 function debounce(func: any, wait: number) {
   let timeout: NodeJS.Timeout

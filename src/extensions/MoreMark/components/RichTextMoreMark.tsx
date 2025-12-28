@@ -48,7 +48,7 @@ export function RichTextMoreMark() {
   }
 
   return (
-    <DropdownMenu>
+    <DropdownMenu modal={false}>
       <DropdownMenuTrigger asChild
         disabled={disabled}
       >

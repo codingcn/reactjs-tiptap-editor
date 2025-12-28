@@ -46,7 +46,7 @@ export function RichTextFontSize() {
   }
 
   return (
-    <DropdownMenu>
+    <DropdownMenu modal={false}>
       <DropdownMenuTrigger asChild
         disabled={disabled}
       >

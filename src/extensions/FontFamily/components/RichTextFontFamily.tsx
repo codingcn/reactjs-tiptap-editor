@@ -50,7 +50,7 @@ export function RichTextFontFamily() {
   }
 
   return (
-    <DropdownMenu>
+    <DropdownMenu modal={false}>
       <DropdownMenuTrigger asChild
         disabled={disabled}
       >

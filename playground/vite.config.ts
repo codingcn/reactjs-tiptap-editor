@@ -28,18 +28,20 @@ export default defineConfig(({ mode }) => {
       sourcemap: isAnalyze,
     },
     resolve: {
-      alias: [{ find: '@', replacement: path.resolve(__dirname, 'src') }],
+      alias: [
+        { find: '@', replacement: path.resolve(__dirname, '../src') },
+      ],
     },
     esbuild: {
       sourcemap: isDev,
     },
     server: {
       host: '0.0.0.0',
-      port: 8000,
+      port: 4000,
     },
     preview: {
       host: '0.0.0.0',
-      port: 8000,
+      port: 4000,
     },
   }
 })

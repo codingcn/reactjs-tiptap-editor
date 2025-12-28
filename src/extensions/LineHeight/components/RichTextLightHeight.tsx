@@ -30,7 +30,7 @@ export function RichTextLineHeight() {
   }
 
   return (
-    <DropdownMenu>
+    <DropdownMenu modal={false}>
       <DropdownMenuTrigger asChild
         disabled={editorDisabled}
       >

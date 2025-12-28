@@ -1,4 +1,4 @@
-import React, { Fragment, useMemo } from 'react';
+import React, { Fragment, useMemo, useState } from 'react';
 
 import {
   ActionMenuButton,
@@ -43,6 +43,9 @@ export function RichTextHeading() {
 
   const { disabled, dataState } = useActive(isActive);
 
+  // Use controlled state to prevent menu from closing on re-render
+  const [isOpen, setIsOpen] = useState(false);
+
   const title = useMemo(() => {
     return (dataState as any)?.title || t('editor.paragraph.tooltip');
   }, [dataState]);
@@ -52,7 +55,7 @@ export function RichTextHeading() {
   }
 
   return (
-    <DropdownMenu>
+    <DropdownMenu modal={false} open={isOpen} onOpenChange={setIsOpen}>
       <DropdownMenuTrigger asChild
         disabled={disabled}
       >
@@ -65,7 +68,11 @@ export function RichTextHeading() {
         />
       </DropdownMenuTrigger>
 
-      <DropdownMenuContent className="richtext-w-full">
+      <DropdownMenuContent 
+        className="richtext-w-full"
+        onMouseDown={(e) => e.preventDefault()}
+        onCloseAutoFocus={(e) => e.preventDefault()}
+      >
         {items?.map((item: any, index: any) => {
 
           return (

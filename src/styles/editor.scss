@@ -69,7 +69,7 @@
     }
 
     :not(.image-view)::selection, :not(.search-result)::selection {
-        background-color: hsl(var(--accent)) !important;
+        background-color:transparent !important;
     }
 
     .is-empty::before {
